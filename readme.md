@@ -18,16 +18,16 @@ Um sistema de gerenciamento de tarefas desenvolvido como parte de um trabalho de
 - Deploy opcional em plataformas como **Render, Vercel ou Railway**
 
 ## 📂 Estrutura do Projeto
-task-manager/
-│── src/
-│ ├── app.js # Ponto de entrada do servidor
-│ ├── routes/ # Rotas da API
-│ ├── controllers/ # Lógica de cada recurso
-│ ├── models/ # Modelos de dados
-│ ├── swagger.js # Configuração da documentação Swagger
-│── public/ # Arquivos estáticos (HTML, CSS, JS, Bootstrap)
-│── package.json
-│── README.md
+task-manager/ <br>
+│── src/ <br>
+│ ├── app.js # Ponto de entrada do servidor <br>
+│ ├── routes/ # Rotas da API <br>
+│ ├── controllers/ # Lógica de cada recurso <br>
+│ ├── models/ # Modelos de dados <br>
+│ ├── swagger.js # Configuração da documentação Swagger <br>
+│── public/ # Arquivos estáticos (HTML, CSS, JS, Bootstrap) <br>
+│── package.json <br>
+│── README.md <br>
 
 
 ## ⚙️ Instalação e Execução
