@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar - Task Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Cadastro</h1>
-  <form id="registerForm">
-    <label>Usuário:</label><br />
-    <input type="text" id="username" required /><br /><br />
-
-    <label>Senha:</label><br />
-    <input type="password" id="password" required /><br /><br />
-
-    <button type="submit">Registrar</button>
-  </form>
-
-  <p id="msg"></p>
+<body class="bg-light">
+  <div class="container d-flex align-items-center justify-content-center vh-100">
+    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+      <h2 class="text-center text-success mb-4">Task Manager</h2>
+      <h5 class="mb-3">Criar Conta</h5>
+      <form id="registerForm">
+        <div class="mb-3">
+          <label for="username" class="form-label">Usuário</label>
+          <input type="text" class="form-control" id="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input type="password" class="form-control" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Registrar</button>
+      </form>
+      <p class="text-center mt-3">
+        Já tem conta? <a href="/login.html">Login</a>
+      </p>
+    </div>
+  </div>
 
   <script>
-    const form = document.getElementById("registerForm");
-    const msg = document.getElementById("msg");
-
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
@@ -36,17 +41,15 @@
           body: JSON.stringify({ username, password }),
         });
 
-        const data = await res.json();
-        msg.textContent = data.message || data.error;
-
         if (res.ok) {
-          msg.style.color = "green";
+          alert("Conta criada com sucesso! Faça login.");
+          window.location.href = "/login.html";
         } else {
-          msg.style.color = "red";
+          const data = await res.json();
+          alert(data.message || "Erro ao registrar");
         }
-      } catch (err) {
-        msg.textContent = "Erro de conexão.";
-        msg.style.color = "red";
+      } catch {
+        alert("Erro de conexão.");
       }
     });
   </script>

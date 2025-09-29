@@ -29,35 +29,30 @@ task-manager/
 │── package.json
 │── README.md
 
-bash
-Copiar código
 
 ## ⚙️ Instalação e Execução
 
 1. Clone o repositório:
-   ```bash
+
    git clone https://github.com/seu-usuario/task-manager.git
    cd task-manager
-Instale as dependências:
 
-bash
-Copiar código
-npm install
-Inicie o servidor:
+2. Instale as dependências:
 
-bash
-Copiar código
-node src/app.js
-Acesse no navegador:
+   npm install
 
-Interface Web: http://localhost:3000
+3. Inicie o servidor:
 
-Documentação da API: http://localhost:3000/api-docs
+   node src/app.js
 
-🔑 Autenticação
-O sistema possui login/logout básico.
 
-Apenas usuários autenticados podem criar, editar ou deletar tarefas.
+## Autenticação
+
+- O sistema possui login/logout básico.
+
+- Apenas usuários autenticados podem criar, editar ou deletar tarefas.
+
+## Endpoints da API
 
 | Método | Rota         | Descrição              |
 | ------ | ------------ | ---------------------- |
@@ -68,7 +63,9 @@ Apenas usuários autenticados podem criar, editar ou deletar tarefas.
 | POST   | `/login`     | Login básico           |
 | GET    | `/logout`    | Logout                 |
 
-🛠️ Planejamento
+
+## 🛠️ Planejamento
+
 O desenvolvimento foi organizado com ferramentas como:
 
 Trello ou Notion para Kanban e planejamento
@@ -82,13 +79,3 @@ develop → desenvolvimento
 feature/* → novas funcionalidades
 
 hotfix/* → correções rápidas
-
-🚀 Deploy
-Você pode publicar o projeto em:
-
-Render
-
-Railway
-
-Vercel
-
