@@ -1,32 +1,44 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+import bcrypt from 'bcryptjs';
+import db from '../database.js';
 
-module.exports = {
-  async register(req, res) {
-    const { username, password } = req.body;
-    const hashed = await bcrypt.hash(password, 10);
-    try {
-      const user = await User.create({ username, password: hashed });
-      res.json(user);
-    } catch (err) {
-      res.status(400).json({ error: 'Usuário já existe' });
-    }
-  },
-
-  async login(req, res) {
-    const { username, password } = req.body;
-    const user = await User.findOne({ where: { username } });
-    if (!user) return res.status(400).json({ error: 'Usuário não encontrado' });
-
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(400).json({ error: 'Senha inválida' });
-
-    req.session.userId = user.id;
-    res.json({ message: 'Login realizado com sucesso' });
-  },
-
-  logout(req, res) {
-    req.session.destroy();
-    res.json({ message: 'Logout realizado com sucesso' });
+export const register = (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Preencha usuário e senha" });
   }
+
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
+
+  db.run(sql, [username, hashedPassword], function (err) {
+    if (err) {
+      return res.status(400).json({ error: "Usuário já existe ou erro ao registrar." });
+    }
+    res.status(201).json({ message: "Usuário registrado com sucesso!", userId: this.lastID });
+  });
+};
+
+export const login = (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Preencha usuário e senha" });
+  }
+
+  const sql = `SELECT * FROM users WHERE username = ?`;
+  db.get(sql, [username], (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({ error: "Usuário ou senha incorretos" });
+    }
+    
+    const isMatch = bcrypt.compareSync(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Usuário ou senha incorretos" });
+    }
+    else{
+      const userId = user.id;
+      res.json({ message: "Login realizado com sucesso!",
+      userId: userId //ID do Usuário
+      });
+    }
+  });
 };
