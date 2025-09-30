@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <!-- Lista -->
+
     <div class="card shadow-sm">
       <div class="card-body">
         <h5 class="card-title">Lista de Tarefas</h5>
@@ -36,22 +36,23 @@
 
     if (!userId) {
       alert("Você não está logado. Por favor, faça o login.");
-      window.location.href = '/index.html'; // Ou a sua página de login
+      window.location.href = '/index.html'; 
     }
 
     const taskList = document.getElementById("taskList");
     const taskForm = document.getElementById("taskForm");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    // Em tasks.html, substitua sua função loadTasks por esta
+
+
 
 async function loadTasks() {
-  taskList.innerHTML = ""; // Limpa a lista para recarregar
+  taskList.innerHTML = ""; 
   try {
     const res = await fetch(`/api/tasks/user/${userId}`);
     if (!res.ok) throw new Error("Falha ao carregar as tarefas");
     
-    // 2. Acessando a propriedade .tasks da resposta
+   
     const data = await res.json();
     const tasks = data.tasks;
 
@@ -63,10 +64,13 @@ async function loadTasks() {
     tasks.forEach((task) => {
       const li = document.createElement("li");
       li.className = `list-group-item d-flex justify-content-between align-items-center ${task.is_completed ? 'text-decoration-line-through text-muted' : ''}`;
-      li.dataset.id = task.id; // Guarda o ID da tarefa no elemento
+      li.dataset.id = task.id;
       
+      
+      const regex = task.title.replace(/<[^>]*>/g, ''); // Remove tags sem deletar texto entre elas
+
       li.innerHTML = `
-        <span>${task.title}</span>
+        <span>${regex}</span>
         <div>
           ${!task.is_completed ? `<button class="btn btn-sm btn-outline-success me-2 complete-btn">Concluir</button>` : ''}
           <button class="btn btn-sm btn-outline-danger delete-btn">Excluir</button>
@@ -82,19 +86,19 @@ async function loadTasks() {
 
     taskForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const title = document.getElementById("taskTitle").value; // Pegando pelo novo id
+      const title = document.getElementById("taskTitle").value;
 
       try {
         const res = await fetch("/api/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          // Corpo da requisição corrigido para incluir title e userId
+          
           body: JSON.stringify({ title: title, userId: userId }),
         });
 
         if (res.ok) {
           document.getElementById("taskTitle").value = "";
-          loadTasks(); // Recarrega a lista
+          loadTasks(); 
         } else {
           const data = await res.json();
           alert(data.error || "Erro ao adicionar tarefa");
@@ -104,25 +108,24 @@ async function loadTasks() {
       }
     });
 
-    // 🔹 Logout
-    // Em tasks.html, substitua seu addEventListener do logoutBtn por este
-
+    // Logout
+  
     logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem('userId'); // Limpa o ID do usuário
+      localStorage.removeItem('userId'); 
       alert('Você saiu com sucesso.');
-      window.location.href = '/index.html'; // Volta para a página de login
+      window.location.href = '/index.html'; 
     });
 
     taskList.addEventListener('click', async (e) => {
-      const taskId = e.target.closest('li').dataset.id; // Pega o ID da tarefa
+      const taskId = e.target.closest('li').dataset.id; 
 
-      // Lógica para o botão de CONCLUIR
+
       if (e.target.classList.contains('complete-btn')) {
         try {
           const res = await fetch(`/api/tasks/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ is_completed: 1 }) // Marca como concluída
+            body: JSON.stringify({ is_completed: 1 }) 
           });
           if (res.ok) loadTasks();
         } catch (err) {
@@ -130,7 +133,7 @@ async function loadTasks() {
         }
       }
 
-      // Lógica para o botão de EXCLUIR
+
       if (e.target.classList.contains('delete-btn')) {
         if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
           try {
