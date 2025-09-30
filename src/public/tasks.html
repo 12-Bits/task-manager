@@ -1,102 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minhas Tarefas</title>
+  <meta charset="UTF-8">
+  <title>Gerenciador de Tarefas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-  <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="text-primary">Minhas Tarefas</h1>
-      <button id="logoutBtn" class="btn btn-danger">Sair</button>
-    </div>
+  <div class="container py-5">
+    <h1 class="mb-4 text-center">📋 Gerenciador de Tarefas</h1>
 
-    <!-- Formulário -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Adicionar Nova Tarefa</h5>
-        <form id="taskForm" class="d-flex gap-2">
-          <input type="text" id="task" class="form-control" placeholder="Descrição da tarefa" required />
-          <button type="submit" class="btn btn-success">Adicionar</button>
-        </form>
-      </div>
-    </div>
+<div class="d-flex justify-content-between mb-3">
+  <h2>Suas Tarefas</h2>
+  <button class="btn btn-outline-danger btn-sm" onclick="logout()">Sair</button>
+</div>
 
-    <!-- Lista -->
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Lista de Tarefas</h5>
-        <ul id="taskList" class="list-group"></ul>
-      </div>
-    </div>
+    <!-- Formulário de nova tarefa -->
+    <form id="taskForm" class="d-flex mb-4">
+      <input type="text" id="taskTitle" class="form-control me-2" placeholder="Digite uma nova tarefa" required>
+      <button type="submit" class="btn btn-primary">Adicionar</button>
+    </form>
+
+
+    <!-- Lista de tarefas -->
+    <ul id="taskList" class="list-group"></ul>
   </div>
 
   <script>
-    const taskList = document.getElementById("taskList");
     const taskForm = document.getElementById("taskForm");
-    const logoutBtn = document.getElementById("logoutBtn");
+    const taskTitle = document.getElementById("taskTitle");
+    const taskList = document.getElementById("taskList");
 
-    // 🔹 Buscar tarefas
+    // Carregar tarefas
     async function loadTasks() {
-      taskList.innerHTML = "";
-      try {
-        const res = await fetch("/api/tasks");
-        if (!res.ok) throw new Error("Falha ao carregar tarefas");
-        const tasks = await res.json();
+      const res = await fetch("/api/tasks");
+      const tasks = await res.json();
 
-        tasks.forEach((t) => {
-          const li = document.createElement("li");
-          li.className = "list-group-item";
-          li.textContent = t.description;
-          taskList.appendChild(li);
-        });
-      } catch (err) {
-        taskList.innerHTML = `<li class="list-group-item text-danger">${err.message}</li>`;
-      }
+      taskList.innerHTML = "";
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center mb-2";
+        
+        li.innerHTML = `
+          <span class="${task.completed ? 'text-decoration-line-through' : ''}">
+            ${task.title}
+          </span>
+          <div>
+            <button class="btn btn-sm btn-success me-2" onclick="toggleTask(${task.id}, ${!task.completed})">
+              ${task.completed ? "Desmarcar" : "Concluir"}
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">Excluir</button>
+          </div>
+        `;
+
+        taskList.appendChild(li);
+      });
     }
 
-    // 🔹 Adicionar tarefa
+    async function logout() {
+  await fetch("/logout", { method: "POST" });
+  window.location.href = "login.html";
+}
+
+    // Criar nova tarefa
     taskForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const description = document.getElementById("task").value;
 
-      try {
-        const res = await fetch("/api/tasks", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ description }),
-        });
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: taskTitle.value })
+      });
 
-        if (res.ok) {
-          document.getElementById("task").value = "";
-          loadTasks();
-        } else {
-          const data = await res.json();
-          alert(data.message || "Erro ao adicionar tarefa");
-        }
-      } catch (err) {
-        alert("Erro de conexão.");
-      }
+      taskTitle.value = "";
+      loadTasks();
     });
 
-    // 🔹 Logout
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        const res = await fetch("/api/auth/logout", { method: "POST" });
-        if (res.ok) {
-          window.location.href = "/login.html";
-        }
-      } catch {
-        alert("Erro ao fazer logout.");
-      }
-    });
+    // Alternar concluído
+    async function toggleTask(id, completed) {
+      await fetch(`/api/tasks/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed })
+      });
+      loadTasks();
+    }
 
-    // 🔹 Carregar inicial
+    // Deletar tarefa
+    async function deleteTask(id) {
+      await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+      loadTasks();
+    }
+
+    // Carregar ao abrir a página
     loadTasks();
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
