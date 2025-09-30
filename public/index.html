@@ -35,19 +35,27 @@
       const password = document.getElementById("password").value;
 
       try {
-        const res = await fetch("/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
         });
 
+        const data = await res.json();
+
         if (res.ok) {
-          window.location.href = "/tasks.html";
+            // ✅ AQUI ESTÁ A LÓGICA NOVA
+            // Verifique se o userId foi enviado e salve-o
+            if (data.userId) {
+                localStorage.setItem('userId', data.userId);
+                window.location.href = "/tasks.html";
+            } else {
+                alert("Erro: ID do usuário não recebido do servidor.");
+            }
         } else {
-          const data = await res.json();
-          alert(data.message || "Erro ao fazer login");
+            alert(data.error || "Erro ao fazer login"); // Use data.error aqui
         }
-      } catch {
+    } catch {
         alert("Erro de conexão.");
       }
     });
