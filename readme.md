@@ -7,6 +7,7 @@ Um sistema de gerenciamento de tarefas desenvolvido como parte de um trabalho de
 - [Express](https://expressjs.com/)
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
 - [Bootstrap](https://getbootstrap.com/) (para interface visual)
+- [SQLite](https://sqlite.org/)
 - Git e Gitflow (para versionamento)
 
 ## 📌 Funcionalidades
