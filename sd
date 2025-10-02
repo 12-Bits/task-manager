@@ -1,0 +1,36 @@
+[33mcommit 2714e45ee08afa5df4d6edb941c668e857c9dd08[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Merge: 98b27b8 3235f1b
+Author: AliFreitag <alisson-afreitag@educar.rs.gov.br>
+Date:   Tue Sep 30 00:31:33 2025 -0300
+
+    Merge branch 'feat/banco_de_dados'
+
+[33mcommit 98b27b8d982e715f0c9152ee655cf271d3ef1b34[m
+Author: AliFreitag <alisson-afreitag@educar.rs.gov.br>
+Date:   Tue Sep 30 00:31:28 2025 -0300
+
+    Adiciona arquivo de banco de dados da main
+
+[33mcommit 3235f1b422b45c58fce9b132586efece344f500f[m[33m ([m[1;31morigin/feat/banco_de_dados[m[33m, [m[1;32mfeat/banco_de_dados[m[33m)[m
+Author: AliFreitag <alisson-afreitag@educar.rs.gov.br>
+Date:   Tue Sep 30 00:15:11 2025 -0300
+
+    feat: refatoração da lógica da API para lidar com o SQLite
+
+[33mcommit f3849a23b2517f54fbbfaedb7a248e921d03d71a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: João Gabriel <thelorddosgames@gmail.com>
+Date:   Mon Sep 29 16:42:00 2025 -0300
+
+    Update readme.md
+
+[33mcommit 8784295735ce8256819d721647ded69023c34142[m
+Author: 12Bits <thelorddosgames@gmail.com>
+Date:   Mon Sep 29 16:39:49 2025 -0300
+
+    Estilização das paginas, inicio da pagina tasks
+
+[33mcommit 78053695f4b01ddea00590ed6395310640db1204[m
+Author: 12Bits <thelorddosgames@gmail.com>
+Date:   Mon Sep 29 16:21:30 2025 -0300
+
+    first commit

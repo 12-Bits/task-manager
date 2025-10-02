@@ -24,3 +24,7 @@ Thumbs.db
 
 # Ambiente
 .env
+
+# Database
+*.db
+*.sqlite

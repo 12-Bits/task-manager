@@ -44,8 +44,7 @@
         const data = await res.json();
 
         if (res.ok) {
-            // ✅ AQUI ESTÁ A LÓGICA NOVA
-            // Verifique se o userId foi enviado e salve-o
+            
             if (data.userId) {
                 localStorage.setItem('userId', data.userId);
                 window.location.href = "/tasks.html";

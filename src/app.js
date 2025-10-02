@@ -1,8 +1,12 @@
+// app.js
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from './routes/authRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
+
+// --- 1. IMPORTAR A CONFIGURAÇÃO DO SWAGGER ---
+import setupSwagger from './swagger.js';
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(express.static(path.join(__dirname, "..", "public")));
+
+// --- 2. INICIAR A ROTA DE DOCUMENTAÇÃO ---
+setupSwagger(app);
 
 
 //Rotas da API
